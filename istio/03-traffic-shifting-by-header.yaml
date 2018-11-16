@@ -1,0 +1,68 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: helloworld-gateway
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    # tls:
+    #   httpsRedirect: true
+    hosts:
+    - "*"
+  # See: https://medium.com/@prune998/istio-0-8-0-envoy-cert-manager-lets-encrypt-for-tls-d26bee634541
+  # - port:
+  #     number: 443
+  #     name: https
+  #     protocol: HTTPS
+  #   tls:
+  #     mode: SIMPLE
+  #     serverCertificate: /etc/istio/ingressgateway-certs/tls.crt
+  #     privateKey: /etc/istio/ingressgateway-certs/tls.key
+  #   hosts:
+  #   - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: helloworld
+spec:
+  host: helloworld
+  subsets:
+  - name: production
+    labels:
+      app: helloworld
+      version: v1
+  - name: staging
+    labels:
+      app: helloworld
+      version: v2
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: helloworld
+spec:
+  hosts:
+  - helloworld.fyianlai.com
+  gateways:
+  - helloworld-gateway
+  http:
+  # /hello
+  - match:
+    - headers:
+        x-helloworld-env:
+          exact: "staging"
+    route:
+    - destination:
+        host: helloworld
+        subset: staging
+  - route:
+    - destination:
+        host: helloworld
+        subset: production

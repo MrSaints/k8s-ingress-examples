@@ -1,0 +1,18 @@
+---
+apiVersion: contour.heptio.com/v1beta1
+kind: IngressRoute
+metadata:
+  name: helloworld
+spec:
+  virtualhost:
+    fqdn: helloworld.fyianlai.com
+  routes:
+    # /hello
+    - match: /
+      services:
+        - name: helloworld-v1
+          port: 5000
+          weight: 90
+        - name: helloworld-v2
+          port: 5000
+          weight: 10

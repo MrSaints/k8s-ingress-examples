@@ -1,0 +1,4 @@
+# Requires kubernetes/nginx-ingress @ 0.20.2 (not yet released at the time of writing)
+# nginx.ingress.kubernetes.io/canary: "true"
+# nginx.ingress.kubernetes.io/canary-weight: "50"
+# nginx.ingress.kubernetes.io/rewrite-target: "/"

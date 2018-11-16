@@ -1,0 +1,24 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: helloworld
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: helloworld.fyianlai.com
+    http:
+      paths:
+      - path: /v1/
+        backend:
+          serviceName: helloworld-v1
+          servicePort: 5000
+      - path: /v2/
+        backend:
+          serviceName: helloworld-v2
+          servicePort: 5000
+      - path: /
+        backend:
+          serviceName: helloworld
+          servicePort: 5000

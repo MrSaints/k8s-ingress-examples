@@ -1,0 +1,29 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ambassador
+  annotations:
+    getambassador.io/config: |
+      ---
+      # /hello
+      apiVersion: ambassador/v0
+      kind:  Mapping
+      name:  helloworld_v1_mapping
+      prefix: /
+      service: helloworld-v1:5000
+      host: helloworld.fyianlai.com
+      weight: 90
+      ---
+      apiVersion: ambassador/v0
+      kind:  Mapping
+      name:  helloworld_v2_mapping
+      prefix: /
+      service: helloworld-v2:5000
+      host: helloworld.fyianlai.com
+spec:
+  type: LoadBalancer
+  ports:
+   - port: 80
+  selector:
+    service: ambassador

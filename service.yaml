@@ -1,0 +1,44 @@
+---
+# All Versions
+apiVersion: v1
+kind: Service
+metadata:
+  name: helloworld
+  labels:
+    app: helloworld
+spec:
+  ports:
+  - port: 5000
+    name: http
+  selector:
+    app: helloworld
+---
+# Version 1
+apiVersion: v1
+kind: Service
+metadata:
+  name: helloworld-v1
+  labels:
+    app: helloworld-v1
+spec:
+  ports:
+  - port: 5000
+    name: http
+  selector:
+    app: helloworld
+    version: v1
+---
+# Version 2
+apiVersion: v1
+kind: Service
+metadata:
+  name: helloworld-v2
+  labels:
+    app: helloworld-v2
+spec:
+  ports:
+  - port: 5000
+    name: http
+  selector:
+    app: helloworld
+    version: v2
